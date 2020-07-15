@@ -18,8 +18,9 @@ func homeworkStructer(oList []string) {
 		// - (prefix): 教科名
 		// ・(prefix): 課題
 		if strings.HasPrefix(str, "- ") {
-			// 次以降表示される課題の教科名が、有効なものであればシラバス表記にする
-			subjectName, elementsNo = subjectFinder(strings.TrimLeft(str, "- "))
+			// 次以降表示される課題の教科名が、有効なものであれば教科番号(要素数)を返す
+			elementsNo = subjectFinder(strings.TrimLeft(str, "- "))
+			// 見つからなかった場合
 			if elementsNo == -1 {
 				continue
 			} else {
@@ -33,14 +34,20 @@ func homeworkStructer(oList []string) {
 			dueTime, _ = time.Parse("2006-01-02T15:04:05Z", homeworkInfo[2])
 
 			homeworkSlice = append(homeworkSlice, HomeworkStruct{
-				Subject: subjectName,
+				Subject: syllabusSubjectNames[elementsNo],
 				Omitted: omittedSubjectNames[elementsNo],
 				Name:    homeworkInfo[0],
 				ID:      homeworkInfo[1],
 				Due:     dueTime,
 			})
 
-			fmt.Println(subjectName, omittedSubjectNames[elementsNo], homeworkInfo[0], homeworkInfo[1], dueTime)
+			fmt.Println(
+				syllabusSubjectNames[elementsNo],
+				omittedSubjectNames[elementsNo],
+				homeworkInfo[0],
+				homeworkInfo[1],
+				dueTime,
+			)
 		}
 	}
 
@@ -48,13 +55,13 @@ func homeworkStructer(oList []string) {
 	homeworksData.Homeworks = homeworkSlice
 }
 
-// subjectFinder はTeamsチーム名(before)とリンクする教科名を探し、利用しやすい名前にする関数
-func subjectFinder(bSubjectName string) (string, int) {
-	for i, subjectName := range syllabusSubjectNames {
+// subjectFinder はTeamsチーム名(before)とリンクする教科名を探し、教科番号(要素数)を返す関数
+func subjectFinder(bSubjectName string) int {
+	for i, subjectName := range teamsSubjectNames {
 		if subjectName == bSubjectName {
-			return bSubjectName, i
+			return i
 		}
 	}
 	// 教科名が見つからなかった場合
-	return "", -1
+	return -1
 }
