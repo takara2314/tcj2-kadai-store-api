@@ -1,33 +1,41 @@
 package main
 
 import (
-	"fmt"
 	"net"
 	"net/http/fcgi"
-	"os/exec"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-type scheduleList struct {
-	Date      time.Time         `json:"data"`
-	Homeworks []HomeworkStructs `json:"homeworks"`
+var (
+	// 全ての課題情報が格納されているインスタンス
+	homeworksData ResponseJSON
+)
+
+// ResponseJSON は返すJSONの元の構造体
+type ResponseJSON struct {
+	Homeworks []HomeworkStruct `json:"homeworks"`
 }
 
-type HomeworkStructs struct {
-	Comment string    `json:"comment"`
-	Due     time.Time `json:"due"`
+// HomeworkStruct は1つの課題情報を収納する構造体
+type HomeworkStruct struct {
 	Subject string    `json:"subject"`
+	Omitted string    `json:"omitted"`
+	Name    string    `json:"name"`
+	ID      string    `json:"id"`
+	Due     time.Time `json:"due"`
 }
 
 func main() {
 	var err error
+
+	// 毎時指定した時間に課題一覧を取得
+	go getRegularly([]int{0, 10, 20, 30, 40, 50, 55})
+
 	r := gin.Default()
 
 	r.GET("/", homeRequestFunc)
-	r.GET("/get_old", getRequestFuncO)
 	r.GET("/get", getRequestFunc)
 
 	l, err := net.Listen("tcp", ":2314")
@@ -40,65 +48,45 @@ func main() {
 }
 
 func homeRequestFunc(c *gin.Context) {
-	c.String(200, "Please use get or status parameters.")
+	c.String(404, "Please use get or status parameters.")
 }
 
 func getRequestFunc(c *gin.Context) {
-	var command *exec.Cmd = exec.Command("npm", "start")
-	command.Dir = "../../devoirs"
-
-	out, err := command.Output()
-	if err != nil {
-		panic(err)
+	if c.ClientIP() == "126.93.172.178" {
+		c.JSON(200, homeworksData)
+	} else {
+		c.String(200, "誰だおめぇ")
 	}
-
-	var outputList []string = strings.Split(string(out), "\n")
-
-	fmt.Println("List length:", len(outputList))
-
-	for _, str := range outputList {
-		if strings.HasPrefix(str, "・") {
-			devidedList := strings.Split(str, "\t")
-
-			for _, str2 := range devidedList {
-				fmt.Println(str2)
-			}
-
-			fmt.Print("\n")
-		}
-	}
-
-	c.String(200, "Finished task")
 }
 
-func getRequestFuncO(c *gin.Context) {
-	userBrowser := c.Request.Header.Get("User-Agent")
-	fmt.Println(userBrowser)
+// func getRequestFuncO(c *gin.Context) {
+// 	userBrowser := c.Request.Header.Get("User-Agent")
+// 	fmt.Println(userBrowser)
 
-	returnJSON := scheduleList{
-		Date: time.Now(),
-		Homeworks: []HomeworkStructs{
-			{
-				Comment: "プリントをやってください",
-				Due:     time.Now(),
-				Subject: "基礎数学４",
-			},
-			{
-				Comment: "ここしてください",
-				Due:     time.Now(),
-				Subject: "電気電子基礎",
-			},
-			{
-				Comment: "感想を800字以内に書いてください",
-				Due:     time.Now(),
-				Subject: "一般基礎教育２",
-			},
-			{
-				Comment: "Do the handout.",
-				Due:     time.Now(),
-				Subject: "Sonzaishinai English 2",
-			},
-		},
-	}
-	c.JSON(200, returnJSON)
-}
+// 	returnJSON := scheduleList{
+// 		Date: time.Now(),
+// 		Homeworks: []HomeworkStructs{
+// 			{
+// 				Comment: "プリントをやってください",
+// 				Due:     time.Now(),
+// 				Subject: "基礎数学４",
+// 			},
+// 			{
+// 				Comment: "ここしてください",
+// 				Due:     time.Now(),
+// 				Subject: "電気電子基礎",
+// 			},
+// 			{
+// 				Comment: "感想を800字以内に書いてください",
+// 				Due:     time.Now(),
+// 				Subject: "一般基礎教育２",
+// 			},
+// 			{
+// 				Comment: "Do the handout.",
+// 				Due:     time.Now(),
+// 				Subject: "Sonzaishinai English 2",
+// 			},
+// 		},
+// 	}
+// 	c.JSON(200, returnJSON)
+// }
