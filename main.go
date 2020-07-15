@@ -54,7 +54,12 @@ func getRequestFunc(c *gin.Context) {
 
 	var outputList []string = strings.Split(string(out), "\n")
 
-	fmt.Println(outputList)
+	fmt.Println("List length:", len(outputList))
+
+	for _, str := range outputList {
+		fmt.Println(str)
+		fmt.Print("\n")
+	}
 
 	c.String(200, "Finished task")
 }
