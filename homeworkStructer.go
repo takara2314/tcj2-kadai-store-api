@@ -13,6 +13,7 @@ func homeworkStructer(oList []string) {
 	var elementsNo int
 	var subjectName string
 	var dueTime time.Time
+	var checkLock bool = false
 
 	for _, str := range oList {
 		// - (prefix): 教科名
@@ -22,11 +23,13 @@ func homeworkStructer(oList []string) {
 			elementsNo = subjectFinder(strings.TrimLeft(str, "- "))
 			// 見つからなかった場合
 			if elementsNo == -1 {
+				checkLock = true
 				continue
 			} else {
 				fmt.Println(subjectName + "の課題を表示します！！！")
+				checkLock = false
 			}
-		} else {
+		} else if strings.HasPrefix(str, "・") && !checkLock {
 			// 課題の情報 (名前、ID、期限)
 			homeworkInfo = strings.Split(strings.TrimLeft(str, "・"), "\t")
 
