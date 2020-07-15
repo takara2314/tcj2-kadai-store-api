@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/http/fcgi"
 	"os/exec"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -51,7 +52,11 @@ func getRequestFunc(c *gin.Context) {
 		panic(err)
 	}
 
-	fmt.Println(string(out))
+	var outputList []string = strings.Split(string(out), "\n")
+
+	fmt.Println(outputList)
+
+	c.String(200, "Finished task")
 }
 
 func getRequestFuncO(c *gin.Context) {
