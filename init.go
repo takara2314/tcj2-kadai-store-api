@@ -55,7 +55,7 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var discordToken string = string(fileData)
+	var discordToken string = strings.TrimRight(string(fileData), "\n")
 
 	dg, err = discordgo.New("Bot " + discordToken)
 	if err != nil {
