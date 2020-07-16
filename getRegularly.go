@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os/exec"
 	"strings"
@@ -20,10 +19,10 @@ func getRegularly(getTime []int) {
 
 			out, err := command.Output()
 			if err != nil {
-				log.Println("Deviorsで何かエラーが発生しました！")
+				log.Println("Devoirsで何かエラーが発生しました！")
 				panic(err)
 			} else {
-				fmt.Println("エラーなんか起きなかったよ?")
+				// fmt.Println("Devoirs側でエラーなんか起きなかったよ?")
 			}
 
 			// 実行結果を1行ずつリストに入れる

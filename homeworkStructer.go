@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 	"time"
 )
@@ -44,13 +43,13 @@ func homeworkStructer(oList []string) {
 				Due:     dueTime,
 			})
 
-			fmt.Println(
-				syllabusSubjectNames[elementsNo],
-				omittedSubjectNames[elementsNo],
-				homeworkInfo[0],
-				homeworkInfo[1],
-				dueTime,
-			)
+			// fmt.Println(
+			// 	syllabusSubjectNames[elementsNo],
+			// 	omittedSubjectNames[elementsNo],
+			// 	homeworkInfo[0],
+			// 	homeworkInfo[1],
+			// 	dueTime,
+			// )
 		}
 	}
 
