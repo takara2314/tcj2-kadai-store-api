@@ -19,9 +19,11 @@ var (
 	// 許可されたトークンリスト
 	allowedTokens []string
 	// DiscordのDMにアラームを送る必要はあるか
-	isDiscordAlarm bool
+	// isDiscordAlarm bool
 	// アラーム内容
 	dmGreetingM, dmErrorM string
+	// DiscordBotのセッション
+	dg *discordgo.Session
 )
 
 // ResponseJSON は返すJSONの元の構造体
@@ -64,7 +66,9 @@ func init() {
 
 // discordInit はDiscordBotを準備するための関数
 func discordInit(dToken string) {
-	dg, err := discordgo.New("Bot " + dToken)
+	var err error
+
+	dg, err = discordgo.New("Bot " + dToken)
 	if err != nil {
 		panic(fmt.Sprint("Discordセッション作成にエラーが発生しました:", err))
 	}
