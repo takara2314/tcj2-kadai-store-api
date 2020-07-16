@@ -11,7 +11,6 @@ func homeworkStructer(oList []string) {
 	var homeworkInfo []string
 	var homeworkSlice []HomeworkStruct
 	var elementsNo int
-	var subjectName string
 	var dueTime time.Time
 	var checkLock bool = false
 
@@ -26,7 +25,6 @@ func homeworkStructer(oList []string) {
 				checkLock = true
 				continue
 			} else {
-				fmt.Println(subjectName + "の課題を表示します！！！")
 				checkLock = false
 			}
 		} else if strings.HasPrefix(str, "・") && !checkLock {
@@ -34,7 +32,9 @@ func homeworkStructer(oList []string) {
 			homeworkInfo = strings.Split(strings.TrimLeft(str, "・"), "\t")
 
 			// 課題の期限 (time.Time型)
+			// ついでに時刻データのタイムゾーンをUTCからJSTに変更
 			dueTime, _ = time.Parse("2006-01-02T15:04:05Z", homeworkInfo[2])
+			dueTime = timeDiffConv(dueTime)
 
 			homeworkSlice = append(homeworkSlice, HomeworkStruct{
 				Subject: syllabusSubjectNames[elementsNo],
@@ -67,4 +67,16 @@ func subjectFinder(bSubjectName string) int {
 	}
 	// 教科名が見つからなかった場合
 	return -1
+}
+
+// timeDiffConv は時差変換をして返す関数
+func timeDiffConv(tTime time.Time) (rTime time.Time) {
+	// よりUTCらしくする
+	rTime = tTime.UTC()
+
+	// UTC → JST
+	var jst *time.Location = time.FixedZone("Asia/Tokyo", 9*60*60)
+	rTime = rTime.In(jst)
+
+	return
 }
