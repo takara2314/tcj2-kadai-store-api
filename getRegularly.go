@@ -19,6 +19,7 @@ func getRegularly(getTime []int) {
 
 			out, err := command.Output()
 			if err != nil {
+				fmt.Println("エラーが出たみたい！")
 				// API管理者(takara2314)にDiscordでエラーを報告し、
 				// プロセスを強制終了させる
 				discordAlarm("Devoirsで何かエラーが発生しました！", err)

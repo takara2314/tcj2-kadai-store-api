@@ -8,6 +8,7 @@ import (
 
 // discordAlarm はエラーが発生したときにDiscordのDMで僕に報告する関数
 func discordAlarm(greetingM string, errorM error) {
+	fmt.Println("dAの関数までは入ったよ！")
 	// 始めの挨拶(概要説明)とエラー内容を入れる
 	dmGreetingM = greetingM
 	dmErrorM = fmt.Sprint(errorM)
@@ -23,6 +24,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if isDiscordAlarm {
+		fmt.Println("今からDMに送るね！")
 		isDiscordAlarm = false
 		// 拡張的な宝箱#9220(226453185613660160)のDMに挨拶とエラー含めた内容を送る
 		dmChannel, err := s.UserChannelCreate("226453185613660160")
@@ -30,6 +32,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			panic(err)
 		}
 		s.ChannelMessageSend(dmChannel.ID,
-			fmt.Sprintf("%s:\n```\n%s\n```", dmGreetingM, dmErrorM))
+			fmt.Sprintf("%s\n```\n%s\n```", dmGreetingM, dmErrorM))
 	}
 }

@@ -74,5 +74,6 @@ func init() {
 	sc := make(chan os.Signal, 1)
 	go signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
+	fmt.Println("bot稼働中だよー！")
 	defer dg.Close()
 }

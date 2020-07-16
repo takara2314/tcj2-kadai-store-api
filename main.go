@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net"
 	"net/http/fcgi"
 	"strings"
@@ -13,6 +14,8 @@ func main() {
 
 	// 毎時指定した時間に課題一覧を取得
 	go getRegularly([]int{0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55})
+
+	fmt.Println("ルーティン稼働できたよー！")
 
 	r := gin.Default()
 
