@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"os/exec"
 	"strings"
 	"time"
@@ -19,8 +19,10 @@ func getRegularly(getTime []int) {
 
 			out, err := command.Output()
 			if err != nil {
-				log.Println("Devoirsで何かエラーが発生しました！")
-				panic(err)
+				// API管理者(takara2314)にDiscordでエラーを報告し、
+				// プロセスを強制終了させる
+				discordAlarm("Devoirsで何かエラーが発生しました！", err)
+				panic(fmt.Sprint("Devoirsで何かエラーが発生しました:", err))
 			} else {
 				// fmt.Println("Devoirs側でエラーなんか起きなかったよ?")
 			}
