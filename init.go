@@ -40,7 +40,6 @@ type HomeworkStruct struct {
 
 func init() {
 	var fileData []byte
-	var dg *discordgo.Session
 	var err error
 
 	// トークンリストは前のディレクトリの中のtokenファイルに書いてある
@@ -57,7 +56,15 @@ func init() {
 	}
 	var discordToken string = strings.TrimRight(string(fileData), "\n")
 
-	dg, err = discordgo.New("Bot " + discordToken)
+	// DiscordBot起動
+	go discordInit(discordToken)
+
+	fmt.Println("dBot起動をバックグラウンドで行いました！")
+}
+
+// discordInit はDiscordBotを準備するための関数
+func discordInit(dToken string) {
+	dg, err := discordgo.New("Bot " + dToken)
 	if err != nil {
 		panic(fmt.Sprint("Discordセッション作成にエラーが発生しました:", err))
 	}
@@ -72,7 +79,7 @@ func init() {
 	// Discordボットを稼働
 	fmt.Println("ボットは稼働しています。")
 	sc := make(chan os.Signal, 1)
-	go signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
 	fmt.Println("bot稼働中だよー！")
 	defer dg.Close()
