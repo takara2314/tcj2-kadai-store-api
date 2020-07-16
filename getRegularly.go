@@ -23,6 +23,7 @@ func getRegularly(getTime []int) {
 				// API管理者(takara2314)にDiscordでエラーを報告し、
 				// プロセスを強制終了させる
 				discordAlarm("Devoirsで何かエラーが発生しました！", err)
+				fmt.Println("Discord報告完了！")
 				panic(fmt.Sprint("Devoirsで何かエラーが発生しました:", err))
 			} else {
 				// fmt.Println("Devoirs側でエラーなんか起きなかったよ?")

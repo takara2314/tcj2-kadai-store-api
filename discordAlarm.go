@@ -18,6 +18,7 @@ func discordAlarm(greetingM string, errorM error) {
 
 // messageCreate はDiscordBotで投稿をする関数
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
+	fmt.Println("たからん大好き♡")
 	// 応答確認用メッセージ
 	if m.Content == "::mechaTakaran ping" {
 		s.ChannelMessageSend(m.ChannelID, "ボットは正常に稼働しています。")
