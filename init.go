@@ -69,8 +69,6 @@ func init() {
 
 	// DiscordBot起動
 	go discordInit(discordToken)
-
-	fmt.Println("dBot起動をバックグラウンドで行いました！")
 }
 
 // discordInit はDiscordBotを準備するための関数
@@ -90,10 +88,8 @@ func discordInit(dToken string) {
 	}
 
 	// Discordボットを稼働
-	fmt.Println("ボットは稼働しています。")
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
-	fmt.Println("bot稼働中だよー！")
 	defer dg.Close()
 }
