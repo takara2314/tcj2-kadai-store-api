@@ -18,10 +18,6 @@ var (
 	homeworksData ResponseJSON
 	// 許可されたトークンリスト
 	allowedTokens []string
-	// DiscordのDMにアラームを送る必要はあるか
-	// isDiscordAlarm bool
-	// アラーム内容
-	dmGreetingM, dmErrorM string
 	// DiscordBotのセッション
 	dg *discordgo.Session
 	// アラームする人のDiscordID
@@ -30,7 +26,8 @@ var (
 
 // ResponseJSON は返すJSONの元の構造体
 type ResponseJSON struct {
-	Homeworks []HomeworkStruct `json:"homeworks"`
+	Acquisition time.Time        `json:"acquisition"`
+	Homeworks   []HomeworkStruct `json:"homeworks"`
 }
 
 // HomeworkStruct は1つの課題情報を収納する構造体
