@@ -24,6 +24,8 @@ var (
 	dmGreetingM, dmErrorM string
 	// DiscordBotのセッション
 	dg *discordgo.Session
+	// アラームする人のDiscordID
+	adminDiscordID string
 )
 
 // ResponseJSON は返すJSONの元の構造体
@@ -50,6 +52,13 @@ func init() {
 		log.Fatal(err)
 	}
 	allowedTokens = strings.Split(string(fileData), "\n")
+
+	// Discordのトークンリストは前のディレクトリの中のtokenファイルに書いてある
+	fileData, err = ioutil.ReadFile("../tcj2-kadai-store-api_admin-discord-ID.token")
+	if err != nil {
+		log.Fatal(err)
+	}
+	adminDiscordID = strings.TrimRight(string(fileData), "\n")
 
 	// Discordのトークンリストは前のディレクトリの中のtokenファイルに書いてある
 	fileData, err = ioutil.ReadFile("../tcj2-kadai-store-api_discord-alarm.token")

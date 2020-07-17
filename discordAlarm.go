@@ -16,8 +16,8 @@ func discordAlarm(greetingM string, errorM error) {
 	// isDiscordAlarm = true
 
 	fmt.Println("今からDMに送るね！")
-	// 拡張的な宝箱#9220(226453185613660160)のDMに挨拶とエラー含めた内容を送る
-	dmChannel, err := dg.UserChannelCreate("226453185613660160")
+	// 指定したユーザーのDMに挨拶とエラー含めた内容を送る
+	dmChannel, err := dg.UserChannelCreate(adminDiscordID)
 	if err != nil {
 		panic(err)
 	}
