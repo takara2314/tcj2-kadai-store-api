@@ -23,4 +23,14 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	if m.Content == "::mechaTakaran ping" {
 		s.ChannelMessageSend(m.ChannelID, "ボットは正常に稼働しています。")
 	}
+
+	// 強制停止メッセージ
+	if m.Content == "::mechaTakaran stop" {
+		if m.Author.ID == adminDiscordID {
+			s.ChannelMessageSend(m.ChannelID, "ボットを強制終了させます。")
+			panic("管理者による強制終了")
+		} else {
+			s.ChannelMessageSend(m.ChannelID, "あなたはそのコマンドを実行することができません。")
+		}
+	}
 }
