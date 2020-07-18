@@ -61,7 +61,7 @@ func homeworkStructer(oList []string) {
 			})
 
 			// 提出期限が現在時刻より後の場合
-			if (time.Now()).After(dueTime) {
+			if dueTime.After(time.Now()) {
 				homeworkSliceOnlyFuture = append(homeworkSlice, HomeworkStruct{
 					Subject: subjectName,
 					Omitted: omittedName,
