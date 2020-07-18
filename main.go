@@ -40,7 +40,7 @@ func getRequestFunc(c *gin.Context) {
 	// Bearerトークンであり、許可されたトークンであればJSONを返す (そうでなければ401)
 	if strings.HasPrefix(authHeader, "Bearer ") && tokenCheck(strings.TrimLeft(authHeader, "Bearer ")) {
 		// URL変数due-targetに提出期限の指定を入れることで、返される課題一覧を調整
-		if c.Query("due-target") == "future" {
+		if c.Query("due") == "future" {
 			c.JSON(200, homeworksDataOnlyFuture)
 		} else {
 			c.JSON(200, homeworksData)
