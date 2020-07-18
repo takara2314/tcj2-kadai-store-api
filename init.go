@@ -16,6 +16,8 @@ import (
 var (
 	// 全ての課題情報が格納されているインスタンス (タイムゾーン: JST)
 	homeworksData ResponseJSON
+	// 全ての課題情報が格納されているインスタンス (タイムゾーン: JST)
+	homeworksDataOnlyFuture ResponseJSON
 	// 許可されたトークンリスト
 	allowedTokens []string
 	// DiscordBotのセッション

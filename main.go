@@ -39,7 +39,12 @@ func getRequestFunc(c *gin.Context) {
 	authHeader := c.Request.Header.Get("Authorization")
 	// Bearerトークンであり、許可されたトークンであればJSONを返す (そうでなければ401)
 	if strings.HasPrefix(authHeader, "Bearer ") && tokenCheck(strings.TrimLeft(authHeader, "Bearer ")) {
-		c.JSON(200, homeworksData)
+		// URL変数due-targetに提出期限の指定を入れることで、返される課題一覧を調整
+		if c.Query("due-target") == "future" {
+			c.JSON(200, homeworksDataOnlyFuture)
+		} else {
+			c.JSON(200, homeworksData)
+		}
 	} else {
 		c.String(401, "401 Unauthorized")
 	}

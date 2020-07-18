@@ -9,6 +9,7 @@ import (
 func homeworkStructer(oList []string) {
 	var homeworkInfo []string
 	var homeworkSlice []HomeworkStruct
+	var homeworkSliceOnlyFuture []HomeworkStruct
 	var elementsNo int
 	var dueTime time.Time
 	var checkLock bool = false
@@ -59,20 +60,25 @@ func homeworkStructer(oList []string) {
 				Due:     dueTime,
 			})
 
-			// fmt.Println(
-			// 	subjectName,
-			// 	omittedName,
-			// 	homeworkInfo[0],
-			// 	homeworkInfo[1],
-			// 	dueTime,
-			// )
+			// 提出期限が現在時刻より後の場合
+			if (time.Now()).After(dueTime) {
+				homeworkSliceOnlyFuture = append(homeworkSlice, HomeworkStruct{
+					Subject: subjectName,
+					Omitted: omittedName,
+					Name:    homeworkInfo[0],
+					ID:      homeworkInfo[1],
+					Due:     dueTime,
+				})
+			}
 		}
 	}
 
 	// devoirsから取得した時刻を課題スライス(総合)に入れる
 	homeworksData.Acquisition = time.Now()
+	homeworksDataOnlyFuture.Acquisition = time.Now()
 	// 課題スライスを最後に課題スライス(総合)に入れる
 	homeworksData.Homeworks = homeworkSlice
+	homeworksDataOnlyFuture.Homeworks = homeworkSliceOnlyFuture
 }
 
 // subjectFinder は指定したタイプの教科名とリンクする教科番号(要素数)を返す関数
