@@ -30,7 +30,7 @@ func main() {
 
 // homeRequestFunc は/アクセスされたときの処理
 func homeRequestFunc(c *gin.Context) {
-	c.String(404, "Please use get or status parameters.")
+	c.String(404, "Please add get or status path.")
 }
 
 // getRequestFunc は/getアクセスされたときの処理
