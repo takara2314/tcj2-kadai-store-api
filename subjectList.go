@@ -38,7 +38,7 @@ var (
 		"English Expression２",
 		"English Communication３",
 		"電気電子工学",
-		"情報工学2/PBL2",
+		"情報工学1/PBL2",
 		"保健体育２",
 		"保健体育２",
 		"一般基礎教育２",
