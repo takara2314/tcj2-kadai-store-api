@@ -24,7 +24,7 @@ func getRegularly(getTime []int) {
 					discordAlarmed = true
 					discordAlarm("Devoirsで何かエラーが発生しました！RDP接続したデスクトップからdevoirsを手動で起動すると1時間だけ改善されるかもしれません。", err)
 				}
-				return
+				continue
 			}
 			discordAlarmed = false
 
