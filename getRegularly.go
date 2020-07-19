@@ -22,7 +22,7 @@ func getRegularly(getTime []int) {
 				// プロセスを強制終了させる
 				if !discordAlarmed {
 					discordAlarmed = true
-					discordAlarm("Devoirsで何かエラーが発生しました！RDP接続したデスクトップからdevoirsを手動で起動すると1時間だけ改善されるかもしれません。", err)
+					discordAlarm("Devoirsで何かエラーが発生しました！\nRDP接続したデスクトップからDevoirsを手動で起動すると1時間だけ改善されるかもしれません。", err)
 				}
 				continue
 			}
