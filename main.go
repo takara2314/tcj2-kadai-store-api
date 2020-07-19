@@ -41,9 +41,19 @@ func getRequestFunc(c *gin.Context) {
 	if strings.HasPrefix(authHeader, "Bearer ") && tokenCheck(strings.TrimLeft(authHeader, "Bearer ")) {
 		// URL変数due-targetに提出期限の指定を入れることで、返される課題一覧を調整
 		if c.Query("due") == "future" {
-			c.JSON(200, homeworksDataOnlyFuture)
+			// タイムゾーンの指定
+			if c.Query("timezone") == "JST" {
+				c.JSON(200, homeworksDataOnlyFutureJST)
+			} else {
+				c.JSON(200, homeworksDataOnlyFuture)
+			}
 		} else {
-			c.JSON(200, homeworksData)
+			// タイムゾーンの指定
+			if c.Query("timezone") == "JST" {
+				c.JSON(200, homeworksDataJST)
+			} else {
+				c.JSON(200, homeworksData)
+			}
 		}
 	} else {
 		c.String(401, "401 Unauthorized")
