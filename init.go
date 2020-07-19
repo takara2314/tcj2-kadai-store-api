@@ -14,16 +14,22 @@ import (
 )
 
 var (
-	// 全ての課題情報が格納されているインスタンス (タイムゾーン: JST)
+	// 全ての課題情報が格納されているインスタンス (タイムゾーン: UTC)
 	homeworksData ResponseJSON
-	// 全ての課題情報が格納されているインスタンス (タイムゾーン: JST)
+	// 全ての課題情報が格納されているインスタンス (タイムゾーン: UTC)
 	homeworksDataOnlyFuture ResponseJSON
+	// 全ての課題情報が格納されているインスタンス (タイムゾーン: JST)
+	homeworksDataJST ResponseJSON
+	// 全ての課題情報が格納されているインスタンス (タイムゾーン: JST)
+	homeworksDataOnlyFutureJST ResponseJSON
 	// 許可されたトークンリスト
 	allowedTokens []string
 	// DiscordBotのセッション
 	dg *discordgo.Session
 	// アラームする人のDiscordID
 	adminDiscordID string
+	// 重要なアラームを送信したかどうか
+	discordAlarmed bool = false
 )
 
 // ResponseJSON は返すJSONの元の構造体

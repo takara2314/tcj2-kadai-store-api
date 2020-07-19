@@ -20,11 +20,13 @@ func getRegularly(getTime []int) {
 			if err != nil {
 				// API管理者(takara2314)にDiscordでエラーを報告し、
 				// プロセスを強制終了させる
-				discordAlarm("Devoirsで何かエラーが発生しました！RDP接続したデスクトップからdevoirsを手動で起動すると1時間だけ改善されるかもしれません。", err)
-				// panic(fmt.Sprint("Devoirsで何かエラーが発生しました:", err))
-			} else {
-				// fmt.Println("Devoirs側でエラーなんか起きなかったよ?")
+				if !discordAlarmed {
+					discordAlarmed = true
+					discordAlarm("Devoirsで何かエラーが発生しました！RDP接続したデスクトップからdevoirsを手動で起動すると1時間だけ改善されるかもしれません。", err)
+				}
+				return
 			}
+			discordAlarmed = false
 
 			// 実行結果を1行ずつリストに入れる
 			var outputData []string = strings.Split(string(out), "\n")

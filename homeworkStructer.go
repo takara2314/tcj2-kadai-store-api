@@ -10,8 +10,11 @@ func homeworkStructer(oList []string) {
 	var homeworkInfo []string
 	var homeworkSlice []HomeworkStruct
 	var homeworkSliceOnlyFuture []HomeworkStruct
+	var homeworkSliceJST []HomeworkStruct
+	var homeworkSliceOnlyFutureJST []HomeworkStruct
 	var elementsNo int
 	var dueTime time.Time
+	var dueTimeJST time.Time
 	var checkLock bool = false
 
 	var subjectName, omittedName string
@@ -50,7 +53,7 @@ func homeworkStructer(oList []string) {
 			// 課題の期限 (time.Time型)
 			// ついでに時刻データのタイムゾーンをUTCからJSTに変更
 			dueTime, _ = time.Parse("2006-01-02T15:04:05Z", homeworkInfo[2])
-			dueTime = timeDiffConv(dueTime)
+			dueTimeJST = timeDiffConv(dueTime)
 
 			homeworkSlice = append(homeworkSlice, HomeworkStruct{
 				Subject: subjectName,
@@ -58,6 +61,13 @@ func homeworkStructer(oList []string) {
 				Name:    homeworkInfo[0],
 				ID:      homeworkInfo[1],
 				Due:     dueTime,
+			})
+			homeworkSliceJST = append(homeworkSliceJST, HomeworkStruct{
+				Subject: subjectName,
+				Omitted: omittedName,
+				Name:    homeworkInfo[0],
+				ID:      homeworkInfo[1],
+				Due:     dueTimeJST,
 			})
 
 			// 提出期限が現在時刻より後の場合
@@ -68,6 +78,13 @@ func homeworkStructer(oList []string) {
 					Name:    homeworkInfo[0],
 					ID:      homeworkInfo[1],
 					Due:     dueTime,
+				})
+				homeworkSliceOnlyFutureJST = append(homeworkSliceOnlyFutureJST, HomeworkStruct{
+					Subject: subjectName,
+					Omitted: omittedName,
+					Name:    homeworkInfo[0],
+					ID:      homeworkInfo[1],
+					Due:     dueTimeJST,
 				})
 			}
 		}
