@@ -42,14 +42,14 @@ func getRequestFunc(c *gin.Context) {
 		// URL変数due-targetに提出期限の指定を入れることで、返される課題一覧を調整
 		if c.Query("due") == "future" {
 			// タイムゾーンの指定
-			if c.Query("timezone") == "JST" {
+			if c.Query("timezone") == "Asia/Tokyo" {
 				c.JSON(200, homeworksDataOnlyFutureJST)
 			} else {
 				c.JSON(200, homeworksDataOnlyFuture)
 			}
 		} else {
 			// タイムゾーンの指定
-			if c.Query("timezone") == "JST" {
+			if c.Query("timezone") == "Asia/Tokyo" {
 				c.JSON(200, homeworksDataJST)
 			} else {
 				c.JSON(200, homeworksData)

@@ -18,9 +18,9 @@ var (
 	homeworksData ResponseJSON
 	// 全ての課題情報が格納されているインスタンス (タイムゾーン: UTC)
 	homeworksDataOnlyFuture ResponseJSON
-	// 全ての課題情報が格納されているインスタンス (タイムゾーン: JST)
+	// 全ての課題情報が格納されているインスタンス (タイムゾーン: Asia/Tokyo)
 	homeworksDataJST ResponseJSON
-	// 全ての課題情報が格納されているインスタンス (タイムゾーン: JST)
+	// 全ての課題情報が格納されているインスタンス (タイムゾーン: Asia/Tokyo)
 	homeworksDataOnlyFutureJST ResponseJSON
 	// 許可されたトークンリスト
 	allowedTokens []string
