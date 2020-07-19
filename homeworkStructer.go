@@ -93,9 +93,13 @@ func homeworkStructer(oList []string) {
 	// devoirsから取得した時刻を課題スライス(総合)に入れる
 	homeworksData.Acquisition = time.Now()
 	homeworksDataOnlyFuture.Acquisition = time.Now()
+	homeworksDataJST.Acquisition = time.Now()
+	homeworksDataOnlyFutureJST.Acquisition = time.Now()
 	// 課題スライスを最後に課題スライス(総合)に入れる
 	homeworksData.Homeworks = homeworkSlice
 	homeworksDataOnlyFuture.Homeworks = homeworkSliceOnlyFuture
+	homeworksDataJST.Homeworks = homeworkSliceJST
+	homeworksDataOnlyFutureJST.Homeworks = homeworkSliceOnlyFutureJST
 }
 
 // subjectFinder は指定したタイプの教科名とリンクする教科番号(要素数)を返す関数
