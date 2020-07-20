@@ -1,6 +1,7 @@
 package main
 
 var (
+	// Teamsのチーム名
 	teamsSubjectNames = []string{
 		"[024]J2HR2020",
 		"[024] 2020 J2A  国語",
@@ -23,6 +24,7 @@ var (
 		"[024]2年一般基礎教育２(2020)",
 	}
 
+	// シラバス表記の教科名
 	syllabusSubjectNames = []string{
 		"HR",
 		"国語２",
@@ -45,6 +47,7 @@ var (
 		"一般基礎教育２",
 	}
 
+	// 省略された教科名
 	omittedSubjectNames = []string{
 		"HR",
 		"国語",

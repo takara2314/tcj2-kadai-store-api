@@ -1,5 +1,5 @@
 # 🎒 TCJ2 Kadai Store API
-[Devoirs](https://github.com/approvers/devoirs) を使用して [MS Teams](https://www.microsoft.com/ja-jp/microsoft-365/microsoft-teams/group-chat-software/)(Microsoft 365 Education) で出されている課題の情報を取得し、APIを提供します。
+[Devoirs](https://github.com/approvers/devoirs) を使用して [Microsoft Teams](https://www.microsoft.com/ja-jp/microsoft-365/microsoft-teams/group-chat-software/)(Microsoft 365 Education) で出されている課題の情報を取得し、APIを提供します。
 この場をお借りして Devoirs の開発に関わった方々に感謝申し上げます。
 
 ## 👨‍💻 API利用方法
@@ -39,7 +39,7 @@ $ curl https://example.com/get?due=future&timezone=Asia/Tokyo \
 ### 1. WebサーバーとGUIアプリの実行環境を構築します。
 Devoirs(v0.3.0以前)はCLIアプリですが、認証時にGUIを用いるので、RDPやX転送などでGUIアプリを実行できる環境を構築してください。
 
-### 2. Devoirs **v0.3.0** のソースコードをインストールします。
+### 2. Devoirs v0.3.0 のソースコードをインストールします。
 実行ファイルを実行するときに出るログを使用するので、**GUI版のDevoirs(v1.0.0以降)では動作しません。**
 
 ### 3. このレポジトリをGOPATHの中にクローンします。
@@ -93,7 +93,7 @@ for (const c of await client.getClasses()) {
 に書き換えます。
 これをすることによって、課題のIDや提出期限も取得できるようになります。
 
-### 7. go/tcj2-kadai-store-api/ で**go build**を実行し、実行ファイルを生成します。
+### 7. go/tcj2-kadai-store-api/ でgo buildを実行し、実行ファイルを生成します。
 実行できない場合は、[Releases](https://github.com/takara2314/tcj2-kadai-store-api/releases)から実行ファイルをダウンロードしてください。
 
 ### 8. 生成された実行ファイルを実行します。

@@ -63,7 +63,7 @@ func getRequestFunc(c *gin.Context) {
 
 // versionRequestFunc は/versionアクセスされたときの処理
 func versionRequestFunc(c *gin.Context) {
-	c.String(200, "TCJ2 Kadai Store API - v0.1.1")
+	c.String(200, "TCJ2 Kadai Store API - v0.1.2 pre1")
 }
 
 // tokenCheck はAuthorization(Header)のトークンと一致すればtrueを返す関数

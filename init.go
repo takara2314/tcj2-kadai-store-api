@@ -115,7 +115,8 @@ func discordInit(dToken string) {
 		panic(fmt.Sprint("DiscordBotの起動に失敗しました:", err))
 	}
 
-	fmt.Println("DiscordBotを起動します…")
+	fmt.Println("DiscordBotを起動しました。")
+	discordAlarm("Linked!", nil)
 	// Discordボットを稼働
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
