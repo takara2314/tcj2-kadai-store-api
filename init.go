@@ -116,7 +116,7 @@ func discordInit(dToken string) {
 	}
 
 	fmt.Println("DiscordBotを起動しました。")
-	discordAlarm("Linked!", nil)
+	discordAlarm("このメッセージが届いていれば、正しくIDを追加できています。", nil)
 	// Discordボットを稼働
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
