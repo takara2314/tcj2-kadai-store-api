@@ -4,9 +4,14 @@
 
 ## 👨‍💻 API利用方法
 ### 課題一覧を取得 — GET /get
+#### Parameters
+| Parameter |                                                           |
+|:----------|:---------------------------------------------------------:|
+| due       | 提出期限が過ぎているものを除く場合は`future`を入れてください。 |
+| timezone  | `Asia/Tokyo`のみサポートしています。それ以外はUTCとなります。 |
 #### Curl Example
 ```Bash
-$ curl https://example.com/get \
+$ curl https://example.com/get?due=future&timezone=Asia/Tokyo \
   -H "Authorization: Bearer $ACCESS_TOKEN"
 ```
 #### Response Example
@@ -46,7 +51,7 @@ GOPATH以外では正しく動作しない場合があります。
 **APIで許可するトークン**を記述します。
 改行区切りで複数のトークンを指定することができます。
 
-#### 任意
+#### オプション (DiscordのDMで通知)
 - kadai-store-api_discord-alarm.token
 - kadai-store-api_admin-discord-ID.id
 
