@@ -20,7 +20,7 @@ $ curl https://example.com/get \
       "name": "第1回課題",
       "id": "1234",
       "due": "2020-04-01T12:34:56.000Z"
-	}
+    }
   ]
 }
 ```
@@ -38,15 +38,18 @@ Devoirs(v0.3.0以前)はCLIアプリですが、認証時にGUIを用いるの�
 実行ファイルを実行するときに出るログを使用するので、**GUI版のDevoirs(v1.0.0以降)では動作しません。**
 
 ### 3. このレポジトリをGOPATHの中にクローンします。
+GOPATH以外では正しく動作しない場合があります。
 
 ### 4. GOPATHの中に以下のファイルを加えます。
 - kadai-store-api.token
+
 **APIで許可するトークン**を記述します。
 改行区切りで複数のトークンを指定することができます。
 
 #### 任意
 - kadai-store-api_discord-alarm.token
 - kadai-store-api_admin-discord-ID.id
+
 それぞれ**DiscordBotのトークン**、**API管理者のDiscordID**を記述します。
 複数のトークンやIDを入れることはできません。
 これらのファイルを加えることによって、Devoirsの実行エラーが生じたときに、DiscordのDMで通知を受け取ることができます。
