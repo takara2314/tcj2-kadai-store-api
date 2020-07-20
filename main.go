@@ -12,12 +12,13 @@ func main() {
 	var err error
 
 	// 毎時指定した時間に課題一覧を取得
-	go getRegularly([]int{0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55})
+	go getRegularly([]int{0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58})
 
 	r := gin.Default()
 
 	r.GET("/", homeRequestFunc)
 	r.GET("/get", getRequestFunc)
+	r.GET("/version", versionRequestFunc)
 
 	l, err := net.Listen("tcp", ":2314")
 	if err != nil {
@@ -58,6 +59,11 @@ func getRequestFunc(c *gin.Context) {
 	} else {
 		c.String(401, "401 Unauthorized")
 	}
+}
+
+// versionRequestFunc は/versionアクセスされたときの処理
+func versionRequestFunc(c *gin.Context) {
+	c.String(200, "TCJ2 Kadai Store API - v0.1")
 }
 
 // tokenCheck はAuthorization(Header)のトークンと一致すればtrueを返す関数
