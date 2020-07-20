@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// getRegularly は定期的にDeviors経由でTeamsから課題一覧を取得する関数
+// getRegularly は定期的にDevoirs経由でTeamsから課題一覧を取得する関数
 func getRegularly(getTime []int) {
 	for {
 		var nowMinute int = time.Now().Minute()
@@ -18,7 +18,7 @@ func getRegularly(getTime []int) {
 
 			out, err := command.Output()
 			if err != nil {
-				// API管理者(takara2314)にDiscordでエラーを報告し、
+				// API管理者にDiscordでエラーを報告し、
 				// プロセスを強制終了させる
 				if !discordAlarmed {
 					discordAlarmed = true

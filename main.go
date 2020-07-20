@@ -11,7 +11,9 @@ import (
 func main() {
 	var err error
 
-	// 毎時指定した時間(分)に課題一覧を取得
+	// 毎時指定した時間(分)にdevoirsから課題一覧を取得
+	// []int{} の中括弧の中に取得したい時刻の分を書いてください。
+	// その時間になりますと、1回devoirsが実行されます。
 	go getRegularly([]int{0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58})
 
 	r := gin.Default()
@@ -20,13 +22,21 @@ func main() {
 	r.GET("/get", getRequestFunc)
 	r.GET("/version", versionRequestFunc)
 
-	l, err := net.Listen("tcp", ":2314")
+	// Reverse Proxy で動かす場合 (デフォルト)
+	// (こちらを使用する場合は、39行目をコメントにしてください)
+	//
+	l, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		panic(err)
 	}
 	if err := fcgi.Serve(l, r); err != nil {
 		panic(err)
 	}
+
+	// 通常のように動かす場合
+	// (こちらを使用する場合は、28~34行目をコメントにしてください)
+	//
+	// r.Run(":8080")
 }
 
 // homeRequestFunc は/アクセスされたときの処理
@@ -63,7 +73,7 @@ func getRequestFunc(c *gin.Context) {
 
 // versionRequestFunc は/versionアクセスされたときの処理
 func versionRequestFunc(c *gin.Context) {
-	c.String(200, "TCJ2 Kadai Store API - v0.1.2 pre1")
+	c.String(200, "TCJ2 Kadai Store API - v0.1.3")
 }
 
 // tokenCheck はAuthorization(Header)のトークンと一致すればtrueを返す関数
