@@ -20,12 +20,12 @@ func discordAlarm(greetingM string, errorM error) {
 // messageCreate はDiscordBotで投稿をする関数
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// 応答確認用メッセージ
-	if m.Content == "::mechaTakaran ping" {
+	if m.Content == "::kadai-store ping" {
 		s.ChannelMessageSend(m.ChannelID, "ボットは正常に稼働しています。")
 	}
 
 	// 強制停止メッセージ
-	if m.Content == "::mechaTakaran stop" {
+	if m.Content == "::kadai-store stop" {
 		if m.Author.ID == adminDiscordID {
 			s.ChannelMessageSend(m.ChannelID, "ボットを強制終了させます。")
 			panic("管理者による強制終了")

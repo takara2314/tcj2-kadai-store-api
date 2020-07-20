@@ -5,23 +5,23 @@
 ## 👨‍💻 API利用方法
 ### 課題一覧を取得 — GET /get
 #### Curl Example
-```
+```Bash
 $ curl https://example.com/get \
   -H "Authorization: Bearer $ACCESS_TOKEN"
 ```
 #### Response Example
-```JSON:response.json
+```JSON
 {
-	"acquisition": "2020-04-01T12:34:56.000Z",
-	"homeworks": [
-		{
-			"subject": "情報工学",
-			"omitted": "情報",
-			"name": "第1回課題",
-			"id": "1234",
-			"due": "2020-04-01T12:34:56.000Z"
-		}
-	]
+  "acquisition": "2020-04-01T12:34:56.000Z",
+  "homeworks": [
+    {
+      "subject": "情報工学",
+      "omitted": "情報",
+      "name": "第1回課題",
+      "id": "1234",
+      "due": "2020-04-01T12:34:56.000Z"
+	}
+  ]
 }
 ```
 
@@ -40,22 +40,26 @@ Devoirs(v0.3.0以前)はCLIアプリですが、認証時にGUIを用いるの�
 ### 3. このレポジトリをGOPATHの中にクローンします。
 
 ### 4. GOPATHの中に以下のファイルを加えます。
-- tcj2-kadai-store-api.token
-- tcj2-kadai-store-api_discord-alarm.token
-- tcj2-kadai-store-api_admin-discord-ID.token
+- kadai-store-api.token
+**APIで許可するトークン**を記述します。
+改行区切りで複数のトークンを指定することができます。
 
-それぞれ、APIで許可するトークン、DiscordBotのトークン、API管理者のDiscordIDを入れます。
-**tcj2-kadai-store-api.token** のみ改行区切りで複数のトークンを設定することができます。
+#### 任意
+- kadai-store-api_discord-alarm.token
+- kadai-store-api_admin-discord-ID.id
+それぞれ**DiscordBotのトークン**、**API管理者のDiscordID**を記述します。
+複数のトークンやIDを入れることはできません。
+これらのファイルを加えることによって、Devoirsの実行エラーが生じたときに、DiscordのDMで通知を受け取ることができます。
 
 ### 5. それぞれのファイルやフォルダを以下のディレクトリ管理下に配置します。
 ```
 ./
-├─ deviors/ ......................................... Deviors v0.3.0
-└─ go/ .............................................. $GOPATH
-   ├─ tcj2-kadai-store-api.token .................... APIで許可するトークン
-   ├─ tcj2-kadai-store-api_discord-alarm.token ...... DiscordBOTのトークン
-   ├─ tcj2-kadai-store-api_admin-discord-ID.token ... API管理者のDiscordID
-   └─ tcj2-kadai-store-api/ ......................... このレポジトリ
+├─ deviors/ ................................. Deviors v0.3.0
+└─ go/ ...................................... $GOPATH
+   ├─ kadai-store-api.token ................. APIで許可するトークン
+   ├─ kadai-store-api_discord-alarm.token ... DiscordBOTのトークン
+   ├─ kadai-store-api_admin-discord-ID.id ... API管理者のDiscordID
+   └─ kadai-store-api/ ...................... このレポジトリ
 ```
 
 ### 6. deviors/src/main.ts の20~26行目の次の構文を変更します。
