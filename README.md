@@ -42,8 +42,9 @@ Devoirs(v0.3.0以前)はCLIアプリですが、認証時にGUIを用いるの�
 ### 2. Devoirs v0.3.0 のソースコードをインストールします。
 実行ファイルを実行するときに出るログを使用するので、**GUI版のDevoirs(v1.0.0以降)では動作しません。**
 
-### 3. このレポジトリをGOPATHの中にクローンします。
-GOPATH以外では正しく動作しない場合があります。
+### 3. このレポジトリをGOPATHの中にインストールします。
+[Releases](https://github.com/takara2314/tcj2-kadai-store-api/releases)からソースコードをダウンロードして展開してください。
+また、GOPATH以外では正しく動作しない場合があります。
 
 ### 4. GOPATHの中に以下のファイルを加えます。
 - kadai-store-api.token
@@ -63,11 +64,15 @@ GOPATH以外では正しく動作しない場合があります。
 ```
 ./
 ├─ devoirs/ ................................. Deviors v0.3.0
+│  ├─ src ................................... Deviorsのソースコード
+│
 └─ go/ ...................................... $GOPATH
    ├─ kadai-store-api.token ................. APIで許可するトークン
    ├─ kadai-store-api_discord-alarm.token ... DiscordBOTのトークン
    ├─ kadai-store-api_admin-discord-ID.id ... API管理者のDiscordID
    └─ kadai-store-api/ ...................... このレポジトリ
+      ├─ main.go ............................ 主にWebアプリの処理
+      ├─ subjectList.go ..................... チーム名や課題を入れる
 ```
 
 ### 6. deviors/src/main.ts の20~26行目の次の構文を変更します。
@@ -93,8 +98,12 @@ for (const c of await client.getClasses()) {
 に書き換えます。
 これをすることによって、課題のIDや提出期限も取得できるようになります。
 
-### 7. go/tcj2-kadai-store-api/ でgo buildを実行し、実行ファイルを生成します。
-実行できない場合は、[Releases](https://github.com/takara2314/tcj2-kadai-store-api/releases)から実行ファイルをダウンロードしてください。
+### 7. go/tcj2-kadai-store-api/subjectList.go を自分のクラスのチーム名・教科名に合わせます。
+デフォルトとして、鳥羽商船高等専門学校のある学科学年の前期課程で履修する教科名とクラスチーム名が入っています。
+ファイルの中の3つのスライス(他の言語でいうリスト)は同じ要素番号(インデックス番号)の値同士とリンクして処理されます。
 
-### 8. 生成された実行ファイルを実行します。
+### 8. go/tcj2-kadai-store-api/ でgo buildを実行し、実行ファイルを生成します。
+**tcj2-kadai-store-api**という名前で生成されます。Windowsだと拡張子がexeになります。
+
+### 9. 生成された実行ファイルを実行します。
 8080ポートでAPIが提供されます。
