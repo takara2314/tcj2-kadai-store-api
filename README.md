@@ -64,8 +64,8 @@ Devoirs(v0.3.0以前)はCLIアプリですが、アカウントの認証時にGU
 ### 5. それぞれのファイルやフォルダを以下のディレクトリ管理下に配置します。
 ```
 ./
-├─ devoirs/ ................................. Deviors v0.3.0
-│  ├─ src ................................... Deviorsのソースコード
+├─ devoirs/ ................................. devoirs v0.3.0
+│  ├─ src ................................... devoirsのソースコード
 │
 └─ go/ ...................................... $GOPATH
    ├─ kadai-store-api.token ................. APIで許可するトークン
@@ -77,7 +77,28 @@ Devoirs(v0.3.0以前)はCLIアプリですが、アカウントの認証時にGU
 ```
 ``├─`` で終わってるものは、まだ続きがあることを示します。
 
-### 6. deviors/src/main.ts の20~26行目の次の構文を変更します。
+### 6. devoirs/src/models/assignment.ts の内容を以下の内容に変更します。
+```TypeScript:main.ts
+import { ClassId } from './class';
+
+export type AssignmentId = string;
+export type DateTime = string;
+
+export interface Assignment {
+  id: AssignmentId;
+  classId: ClassId;
+  dueDateTime: DateTime;
+  displayName: string;
+  isCompleted: boolean;
+}
+
+export function compare(a: Assignment, b: Assignment): number {
+  return a.dueDateTime.localeCompare(b.dueDateTime);
+}
+```
+これをすることによって、課題の提出期限のデータを扱うことができます。
+
+### 7. devoirs/src/main.ts の20~26行目の次の構文を変更します。
 ```TypeScript:main.ts
 for (const c of await client.getClasses()) {
 	console.log(`-`, c.name);
@@ -100,11 +121,11 @@ for (const c of await client.getClasses()) {
 に書き換えます。
 これをすることによって、課題のIDや提出期限も取得できるようになります。
 
-### 7. go/tcj2-kadai-store-api/subjectList.go を対象のクラスのチーム名・教科名に合わせます。
+### 8. go/tcj2-kadai-store-api/subjectList.go を対象のクラスのチーム名・教科名に合わせます。
 デフォルトとして、鳥羽商船高等専門学校のある学科学年の前期課程で履修する教科名とクラスチーム名が入っています。
 ファイルの中の3つのスライス(他の言語でいうリスト)は同じ要素番号(インデックス番号)の値同士とリンクして処理されます。
 
-### 8. GUI環境で deviors/ でDevoirsを実行します。
+### 9. GUI環境で devoirs/ でDevoirsを実行します。
 ```Bash
 $ npm install
 $ npm start
@@ -112,13 +133,13 @@ $ npm start
 Devoirsを初めて起動すると、学校で提供されているMicrosoftアカウントのログインを要求するためにGUIウィンドウが表示されます。
 ログインした後は、**自動認証が行われる1時間後まで**GUIが起動することは基本的にありません。
 
-### 9. go/tcj2-kadai-store-api/ でgo buildを実行し、実行ファイルを生成します。
+### 10. go/tcj2-kadai-store-api/ でgo buildを実行し、実行ファイルを生成します。
 ```Bash
 $ go build
 ```
 **tcj2-kadai-store-api**という名前で生成されます。Windowsだと拡張子がexeになります。
 
-### 10. 生成された実行ファイルを実行します。
+### 11. 生成された実行ファイルを実行します。
 8080ポートでAPIが提供されます。
 
 ## ⌨️ Discordコマンド (オプションでDiscord関連の設定を行った方のみ)

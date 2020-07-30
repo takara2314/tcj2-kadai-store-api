@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// homeworkStructer はDeviorsで出力された課題データを構造体に収納する関数
+// homeworkStructer はDevoirsで出力された課題データを構造体に収納する関数
 func homeworkStructer(oList []string) {
 	var homeworkInfo []string
 	var homeworkSlice []HomeworkStruct
