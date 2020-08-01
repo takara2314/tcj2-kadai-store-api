@@ -17,15 +17,15 @@ func discordAlarm(greetingM string, errorM error) {
 		fmt.Sprintf("%s\n```\n%s\n```", greetingM, fmt.Sprint(errorM)))
 }
 
-// messageCreate はDiscordBotで投稿をする関数
+// messageCreate はDiscordボットで投稿をする関数
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// 応答確認用メッセージ
-	if m.Content == "::kadai-store ping" {
+	if m.Content == configData.Discord.CommandPrefix+"ping" {
 		s.ChannelMessageSend(m.ChannelID, "ボットは正常に稼働しています。")
 	}
 
 	// 強制停止メッセージ
-	if m.Content == "::kadai-store stop" {
+	if m.Content == configData.Discord.CommandPrefix+"stop" {
 		if m.Author.ID == adminDiscordID {
 			s.ChannelMessageSend(m.ChannelID, "ボットを強制終了させます。")
 			panic("管理者による強制終了")

@@ -106,19 +106,19 @@ func homeworkStructer(oList []string) {
 func subjectFinder(bSubjectName string, beforeType string) int {
 	switch beforeType {
 	case "teamsName":
-		for i, subjectName := range teamsSubjectNames {
+		for i, subjectName := range configData.Subjects.Teams {
 			if subjectName == bSubjectName {
 				return i
 			}
 		}
 	case "syllabusName":
-		for i, subjectName := range syllabusSubjectNames {
+		for i, subjectName := range configData.Subjects.Syllabus {
 			if subjectName == bSubjectName {
 				return i
 			}
 		}
 	case "omittedName":
-		for i, subjectName := range omittedSubjectNames {
+		for i, subjectName := range configData.Subjects.Omitted {
 			if subjectName == bSubjectName {
 				return i
 			}

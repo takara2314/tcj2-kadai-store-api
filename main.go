@@ -12,9 +12,12 @@ func main() {
 	var err error
 
 	// 毎時指定した時間(分)にdevoirsから課題一覧を取得
-	// []int{} の中括弧の中に取得したい時刻の分を書いてください。
-	// その時間になりますと、1回devoirsが実行されます。
-	go getRegularly([]int{0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58})
+	go getRegularly(configData.UpdateTimes)
+
+	// GETリミットが無制限でなければ、リクエストマネージャーを呼び出す
+	if configData.GETLimit != -1 {
+		go requestManager()
+	}
 
 	r := gin.Default()
 
@@ -22,8 +25,8 @@ func main() {
 	r.GET("/get", getRequestFunc)
 	r.GET("/version", versionRequestFunc)
 
-	// Reverse Proxy で動かす場合 (デフォルト)
-	// (こちらを使用する場合は、39行目をコメントにしてください)
+	// Reverse Proxy で動かす場合
+	// (こちらを使用する場合は、37行目をコメントにしてください)
 	//
 	l, err := net.Listen("tcp", ":8080")
 	if err != nil {
@@ -34,23 +37,27 @@ func main() {
 	}
 
 	// 通常のように動かす場合
-	// (こちらを使用する場合は、28~34行目をコメントにしてください)
+	// (こちらを使用する場合は、26~32行目をコメントにしてください)
 	//
 	// r.Run(":8080")
 }
 
 // homeRequestFunc は/アクセスされたときの処理
 func homeRequestFunc(c *gin.Context) {
-	c.String(404, "Please add get or status path.")
+	c.String(404, "Please add get or version path.")
 }
 
 // getRequestFunc は/getアクセスされたときの処理
 func getRequestFunc(c *gin.Context) {
-	// ヘッダー「Authorization」を取得
+	// ヘッダーAuthorizationを取得
 	authHeader := c.Request.Header.Get("Authorization")
-	// Bearerトークンであり、許可されたトークンであればJSONを返す (そうでなければ401)
-	if strings.HasPrefix(authHeader, "Bearer ") && tokenCheck(strings.TrimLeft(authHeader, "Bearer ")) {
-		// URL変数due-targetに提出期限の指定を入れることで、返される課題一覧を調整
+	// HTTPレスポンスステータスコードを取得
+	var statusCode int = isProvide(authHeader)
+
+	switch statusCode {
+	case 200:
+		// 正常
+		// パラメータdueに提出期限の指定を入れることで、返される課題一覧を調整
 		if c.Query("due") == "future" {
 			// タイムゾーンの指定
 			if c.Query("timezone") == "Asia/Tokyo" {
@@ -66,19 +73,54 @@ func getRequestFunc(c *gin.Context) {
 				c.JSON(200, homeworksData)
 			}
 		}
-	} else {
+
+	case 401:
+		// 認証エラー
 		c.String(401, "401 Unauthorized")
+
+	case 429:
+		// API制限突破
+		c.String(429, "429 Too Many Requests")
 	}
 }
 
 // versionRequestFunc は/versionアクセスされたときの処理
 func versionRequestFunc(c *gin.Context) {
-	c.String(200, "TCJ2 Kadai Store API - v0.1.3")
+	c.String(200, "TCJ2 Kadai Store API - v0.2.0 pre1")
+}
+
+// isProvide はこのヘッダーをもとにトークンを取得し、HTTPレスポンスステータスコードを返す
+func isProvide(authHeader string) int {
+	var token string
+
+	// Bearerトークンであるかないか
+	if strings.HasPrefix(authHeader, "Bearer ") {
+		token = strings.TrimLeft(authHeader, "Bearer ")
+	} else {
+		return 401
+	}
+
+	// 許可されたトークンでなければ
+	if !tokenCheck(token) {
+		return 401
+	}
+
+	// GETリミットが無制限でなければ、提供するかどうかを調べる
+	if configData.GETLimit != -1 {
+		if tokenLimit[token] == 0 {
+			return 429
+		}
+		// 利用可能回数をデクリメント
+		tokenLimit[token]--
+	}
+
+	// 何も異常がなければ200
+	return 200
 }
 
 // tokenCheck はAuthorization(Header)のトークンと一致すればtrueを返す関数
 func tokenCheck(hToken string) bool {
-	for _, allowedToken := range allowedTokens {
+	for _, allowedToken := range tokenData.AllowedTokens {
 		if hToken == allowedToken {
 			return true
 		}

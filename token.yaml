@@ -1,0 +1,14 @@
+# TCJ2 Kadai Store API v0.2.0
+# トークン設定
+
+# 当APIにアクセスを許可するトークン
+# (ここで定めたものを利用者側に教えてください)
+# 例として "abcdefghijklmnopqrstuvwxyz" と "zyxwvutsrqponmlkjihgfedcba" を
+# 入れてありますので、本番で動かす際に自分で書き換えてください
+allowed-tokens:
+  - "abcdefghijklmnopqrstuvwxyz"
+  - "zyxwvutsrqponmlkjihgfedcba"
+
+# Discordボットのトークン (config.yaml のdiscordのalarmをtrueにした方のみ)
+# (https://discord.com/developers/applications/<ボットのID>/bot でトークンを確認できます)
+discord-token: ""

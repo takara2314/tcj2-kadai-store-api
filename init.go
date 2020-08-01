@@ -6,31 +6,32 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"gopkg.in/yaml.v2"
 )
 
 var (
-	// 全ての課題情報が格納されているインスタンス (タイムゾーン: UTC)
+	// config.yaml, token.yaml で設定した情報
+	configData configYaml
+	tokenData  tokenYaml
+	// 各トークンの残りのGETリクエスト可能回数を記録
+	tokenLimit map[string]int = make(map[string]int, 0)
+	// 全ての課題情報 (タイムゾーン: UTC)
 	homeworksData ResponseJSON
-	// 全ての課題情報が格納されているインスタンス (タイムゾーン: UTC)
+	// 全ての課題情報 (タイムゾーン: UTC) (期限: 未来のみ)
 	homeworksDataOnlyFuture ResponseJSON
-	// 全ての課題情報が格納されているインスタンス (タイムゾーン: Asia/Tokyo)
+	// 全ての課題情報 (タイムゾーン: Asia/Tokyo)
 	homeworksDataJST ResponseJSON
-	// 全ての課題情報が格納されているインスタンス (タイムゾーン: Asia/Tokyo)
+	// 全ての課題情報 (タイムゾーン: Asia/Tokyo) (期限: 未来のみ)
 	homeworksDataOnlyFutureJST ResponseJSON
-	// 許可されたトークンリスト
-	allowedTokens []string
-	// Discord通知をONにするか
-	isDiscordAlarm bool
-	// DiscordBotのセッション
+	// Discordボットのセッション
 	dg *discordgo.Session
 	// アラームする人のDiscordID
 	adminDiscordID string
-	// 重要なアラームを送信したかどうか
+	// アラームを送信したかどうか
 	discordAlarmed bool = false
 )
 
@@ -49,76 +50,120 @@ type HomeworkStruct struct {
 	Due     time.Time `json:"due"`
 }
 
+// config.yaml のデータを格納する構造体
+type configYaml struct {
+	UpdateTimes []int              `yaml:"update-times"`
+	GETLimit    int                `yaml:"get-limit"`
+	Subjects    configYamlSubjects `yaml:"subjects"`
+	Discord     configYamlDiscord  `yaml:"discord"`
+}
+type configYamlSubjects struct {
+	Teams    []string `yaml:"teams"`
+	Syllabus []string `yaml:"syllabus"`
+	Omitted  []string `yaml:"omitted"`
+}
+type configYamlDiscord struct {
+	Alarm         bool   `yaml:"alarm"`
+	AdminID       string `yaml:"admin-id"`
+	MessageFormat string `yaml:"message-format"`
+	CommandPrefix string `yaml:"command-prefix"`
+}
+
+// token.yaml のデータを格納する構造体
+type tokenYaml struct {
+	AllowedTokens []string `yaml:"allowed-tokens"`
+	DiscordToken  string   `yaml:"discord-token"`
+}
+
 func init() {
 	var fileData []byte
-	var fileName string
 	var err error
 
-	// トークンリストは前のディレクトリの中のtokenファイルに書いてある
-	fileName = "../kadai-store-api.token"
-	fileData, err = ioutil.ReadFile(fileName)
-
+	// config.yaml を読み込む
+	if isFileExist("config.yaml") {
+		log.Fatalln("エラー: config.yaml が見つかりません")
+		log.Fatalln("APIの基本的な設定を書くファイルですので、ファイルが存在しないと起動できません。")
+		panic("起動に失敗しました。")
+	}
+	fileData, err = ioutil.ReadFile("config.yaml")
 	if err != nil {
-		log.Fatal(err)
-	}
-	allowedTokens = strings.Split(string(fileData), "\n")
-
-	// API管理者のDiscordIDは前のディレクトリの中のidファイルに書いてある
-	fileName = "../kadai-store-api_admin-discord-ID.id"
-	if _, err := os.Stat(fileName); os.IsNotExist(err) {
-		isDiscordAlarm = false
-	} else {
-		isDiscordAlarm = true
-		fileData, err = ioutil.ReadFile(fileName)
-
-		if err != nil {
-			log.Fatal(err)
-		}
-		adminDiscordID = strings.TrimRight(string(fileData), "\n")
+		panic(err)
 	}
 
-	// DiscordBotのトークンは前のディレクトリの中のtokenファイルに書いてある
-	fileName = "../kadai-store-api_discord-alarm.token"
-	if _, err := os.Stat(fileName); !os.IsNotExist(err) {
-		fileData, err = ioutil.ReadFile(fileName)
-		if err != nil {
-			log.Fatal(err)
-		}
-		var discordToken string = strings.TrimRight(string(fileData), "\n")
+	// config.yaml からデータを取得
+	err = yaml.Unmarshal(fileData, &configData)
+	if err != nil {
+		panic(err)
+	}
 
-		if isDiscordAlarm {
-			// DiscordBot起動
-			go discordInit(discordToken)
-		} else {
-			fmt.Println("DiscordBotの起動に失敗しました: 報告するユーザーのIDが書かれたファイルが必要です。")
-			fmt.Println("詳しくはREADME.mdをご確認ください。")
+	// token.yaml を読み込む
+	if isFileExist("token.yaml") {
+		log.Fatalln("エラー: token.yaml が見つかりません")
+		log.Fatalln("APIを利用されるのに必要なトークンを書くファイルですので、ファイルが存在しないと起動できません。")
+		panic("起動に失敗しました。")
+	}
+	fileData, err = ioutil.ReadFile("token.yaml")
+	if err != nil {
+		panic(err)
+	}
+
+	// token.yaml からデータを取得
+	err = yaml.Unmarshal(fileData, &tokenData)
+	if err != nil {
+		panic(err)
+	}
+
+	// Discordを起動する設定になっていれば
+	if configData.Discord.Alarm {
+		if tokenData.DiscordToken == "" {
+			log.Fatalln("エラー: Discordボットのトークンが設定されていません。")
+			log.Fatalln("Discord報告機能をオンにするには、報告するボットのトークンが必要です。")
+			panic("起動に失敗しました。")
 		}
-	} else if isDiscordAlarm {
-		fmt.Println("DiscordBotの起動に失敗しました: トークンが書かれたファイルが必要です。")
-		fmt.Println("詳しくはREADME.mdをご確認ください。")
+		if configData.Discord.AdminID == "" {
+			log.Fatalln("エラー: Discordボットに報告してもらうユーザーのIDが設定されていません。")
+			log.Fatalln("Discord報告機能をオンにするには、報告してもらうユーザーのIDが必要です。")
+			log.Fatalln("もしユーザーIDを確認できない場合は、Discordの設定の「テーマ」の「詳細設定」からユーザーIDを確認できる設定にできます。")
+			panic("起動に失敗しました。")
+		}
+		// Discordボットを起動
+		go discordInit()
 	}
 }
 
-// discordInit はDiscordBotを準備するための関数
-func discordInit(dToken string) {
+// discordInit はDiscordボットを準備するための関数
+func discordInit() {
 	var err error
 
-	dg, err = discordgo.New("Bot " + dToken)
+	dg, err = discordgo.New("Bot " + tokenData.DiscordToken)
 	if err != nil {
-		panic(fmt.Sprint("DiscordBotの起動に失敗しました:", err))
+		log.Fatalln("エラー: Discordボットの起動に失敗しました。")
+		log.Fatalln(err)
+		panic("起動に失敗しました。")
 	}
 
 	dg.AddHandler(messageCreate)
 
 	err = dg.Open()
 	if err != nil {
-		panic(fmt.Sprint("DiscordBotの起動に失敗しました:", err))
+		log.Fatalln("エラー: Discordボットの起動に失敗しました。")
+		log.Fatalln(err)
+		panic("起動に失敗しました。")
 	}
 
-	fmt.Println("DiscordBotを起動しました。")
+	fmt.Println("Discordボットを起動しました。")
 	// Discordボットを稼働
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
 	defer dg.Close()
+}
+
+// isFileExist は特定のファイルが見つかればtrueを返す関数
+func isFileExist(fileName string) bool {
+	// ファイル情報を取得できなかったら
+	if _, err := os.Stat(fileName); os.IsNotExist(err) {
+		return false
+	}
+	return true
 }

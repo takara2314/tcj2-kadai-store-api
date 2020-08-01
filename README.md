@@ -57,7 +57,7 @@ Devoirs(v0.3.0以前)はCLIアプリですが、アカウントの認証時にGU
 - kadai-store-api_discord-alarm.token
 - kadai-store-api_admin-discord-ID.id
 
-それぞれ**DiscordBotのトークン**、**API管理者のDiscordID**を記述します。
+それぞれ**Discordボットのトークン**、**API管理者のDiscordID**を記述します。
 複数のトークンやIDを入れることはできません。
 これらのファイルを加えることによって、Devoirsの実行エラーが生じたときに、DiscordのDMで通知を受け取ることができます。
 
@@ -69,7 +69,7 @@ Devoirs(v0.3.0以前)はCLIアプリですが、アカウントの認証時にGU
 │
 └─ go/ ...................................... $GOPATH
    ├─ kadai-store-api.token ................. APIで許可するトークン
-   ├─ kadai-store-api_discord-alarm.token ... DiscordBOTのトークン
+   ├─ kadai-store-api_discord-alarm.token ... Discordボットのトークン
    ├─ kadai-store-api_admin-discord-ID.id ... API管理者のDiscordID
    └─ kadai-store-api/ ...................... このレポジトリ
       ├─ main.go ............................ 主にWebアプリの処理
