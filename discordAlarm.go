@@ -14,7 +14,7 @@ func discordAlarm(description string, coping string, errorM error) {
 		panic(err)
 	}
 	dg.ChannelMessageSend(dmChannel.ID,
-		fmt.Sprintf(configData.Discord.MessageFormat, description, coping, errorM)
+		fmt.Sprintf(configData.Discord.MessageFormat, description, coping, errorM))
 }
 
 // messageCreate はDiscordボットで投稿をする関数
