@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os/exec"
 	"strings"
 	"time"
@@ -17,16 +18,19 @@ func getRegularly(getTime []int) {
 			command.Dir = "../../devoirs"
 
 			out, err := command.Output()
-			if err != nil && configData.Discord.Alarm {
-				// API管理者にDiscordでエラーを報告し、
-				// プロセスを強制終了させる
-				if !discordAlarmed {
-					discordAlarmed = true
-					discordAlarm("Devoirsで何かエラーが発生しました！", "RDP接続したデスクトップからDevoirsを手動で起動すると1時間だけ改善されるかもしれません。", err)
+			if err != nil {
+				// エラーを流すのは1回まで (エラー改善後に再び流せるようになる)
+				if !errorAlarmed {
+					log.Fatalln("Devoirsで何かエラーが発生しました！\nRDP接続したデスクトップからDevoirsを手動で起動すると1時間だけ改善されるかもしれません。\n", err)
+					// API管理者にDiscordでエラーを報告する
+					if configData.Discord.Alarm {
+						discordAlarm("Devoirsで何かエラーが発生しました！", "RDP接続したデスクトップからDevoirsを手動で起動すると1時間だけ改善されるかもしれません。", err)
+					}
 				}
+				errorAlarmed = true
 				continue
 			}
-			discordAlarmed = false
+			errorAlarmed = false
 
 			// 実行結果を1行ずつリストに入れる
 			var outputData []string = strings.Split(string(out), "\n")

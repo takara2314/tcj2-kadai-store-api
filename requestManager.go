@@ -17,6 +17,7 @@ func requestManager() {
 			for _, token := range tokenData.AllowedTokens {
 				tokenLimit[token] = configData.GETLimit
 			}
+			time.Sleep(1 * time.Minute)
 		}
 	}
 }

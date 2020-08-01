@@ -27,7 +27,7 @@ var (
 	// Discordボットのセッション
 	dg *discordgo.Session
 	// アラームを送信したかどうか
-	discordAlarmed bool = false
+	errorAlarmed bool = false
 )
 
 // ResponseJSON は返すJSONの元の構造体

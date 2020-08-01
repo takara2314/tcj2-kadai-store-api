@@ -82,7 +82,7 @@ func getRequestFunc(c *gin.Context) {
 
 // versionRequestFunc は/versionアクセスされたときの処理
 func versionRequestFunc(c *gin.Context) {
-	c.String(200, "TCJ2 Kadai Store API - v0.2.0 pre1")
+	c.String(200, "TCJ2 Kadai Store API - v0.2.0 pre2")
 }
 
 // isProvide はこのヘッダーをもとにトークンを取得し、HTTPレスポンスステータスコードを返す
