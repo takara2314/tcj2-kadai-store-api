@@ -37,8 +37,8 @@ func homeworkStructer(oList []string) {
 			homeworkInfo = strings.Split(strings.TrimLeft(str, "・"), "\t")
 
 			// 課題の情報 (シラバス表記の教科名、省略された教科名)
-			subjectName = syllabusSubjectNames[elementsNo]
-			omittedName = omittedSubjectNames[elementsNo]
+			subjectName = configData.Subjects.Syllabus[elementsNo]
+			omittedName = configData.Subjects.Omitted[elementsNo]
 
 			// 省略された教科名に"/"が入っていたら、正しい教科名は"/"を境にしたどちらかになる
 			if strings.Contains(omittedName, "/") {
