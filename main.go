@@ -79,7 +79,7 @@ func getRequestFunc(c *gin.Context) {
 		c.String(401, "401 Unauthorized")
 
 	case 429:
-		// API制限突破
+		// リクエストが多すぎてAPI制限にかかっているならば
 		c.String(429, "429 Too Many Requests")
 	}
 }

@@ -80,7 +80,7 @@ func init() {
 	var err error
 
 	// config.yaml を読み込む
-	if isFileExist("config.yaml") {
+	if !isFileExist("config.yaml") {
 		log.Fatalln("エラー: config.yaml が見つかりません")
 		log.Fatalln("APIの基本的な設定を書くファイルですので、ファイルが存在しないと起動できません。")
 		panic("起動に失敗しました。")
@@ -97,7 +97,7 @@ func init() {
 	}
 
 	// token.yaml を読み込む
-	if isFileExist("token.yaml") {
+	if !isFileExist("token.yaml") {
 		log.Fatalln("エラー: token.yaml が見つかりません")
 		log.Fatalln("APIを利用されるのに必要なトークンを書くファイルですので、ファイルが存在しないと起動できません。")
 		panic("起動に失敗しました。")
