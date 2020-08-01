@@ -17,7 +17,7 @@ func getRegularly(getTime []int) {
 			command.Dir = "../../devoirs"
 
 			out, err := command.Output()
-			if err != nil {
+			if err != nil && configData.Discord.Alarm {
 				// API管理者にDiscordでエラーを報告し、
 				// プロセスを強制終了させる
 				if !discordAlarmed {
