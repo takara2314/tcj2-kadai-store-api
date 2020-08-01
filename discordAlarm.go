@@ -7,14 +7,14 @@ import (
 )
 
 // discordAlarm はエラーが発生したときにDiscordのDMで僕に報告する関数
-func discordAlarm(greetingM string, errorM error) {
+func discordAlarm(description string, coping string, errorM error) {
 	// 指定したユーザーのDMに挨拶とエラー含めた内容を送る
 	dmChannel, err := dg.UserChannelCreate(adminDiscordID)
 	if err != nil {
 		panic(err)
 	}
 	dg.ChannelMessageSend(dmChannel.ID,
-		fmt.Sprintf("%s\n```\n%s\n```", greetingM, fmt.Sprint(errorM)))
+		fmt.Sprintf(configData.Discord.MessageFormat, description, coping, errorM)
 }
 
 // messageCreate はDiscordボットで投稿をする関数

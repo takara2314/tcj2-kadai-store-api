@@ -91,9 +91,9 @@ discord:
   # エラー通知をするユーザーのID (alarmをtrueにした方のみ)
   admin-id: ""
   # 通知フォーマット (alarmをtrueにした方のみ)
-  #   first %s>  エラーの概要
-  #   second %s> 予測される対処方法
-  #   third %s>  内部のエラーメッセージ (停止メッセージ)
+  #   1つめの%s> エラーの概要
+  #   2つめの%s> 予測される対処方法
+  #   3つめの%s> 内部のエラーメッセージ (停止メッセージ)
   message-format: "%s\n%s\n```\n%s\n```"
   # Discordボットを呼び出すコマンドの接頭辞 (alarmをtrueにした方のみ)
   command-prefix: "::kadai-store"
