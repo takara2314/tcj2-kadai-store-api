@@ -29,6 +29,7 @@ $ curl https://example.com/get?due=future&timezone=Asia/Tokyo \
   ]
 }
 ```
+`acquisition`はDevoirsから取得した時刻です。
 
 ## ✔ 前提 (提供側)
 - Node.js 13+
@@ -37,18 +38,32 @@ $ curl https://example.com/get?due=future&timezone=Asia/Tokyo \
 
 ## 🛠 環境構築 (提供側)
 ### 1. WebサーバーとGUIアプリの実行環境を構築します。
-デフォルトでApacheやNginxなどのWebサーバーの**Reverse Proxyを使用する設定になっています。** 使用しない場合は、``main.go``の25行目以降に詳しい説明が載っていますので、ご確認ください。
+デフォルトで**FastCGIとしてサーバーを開く設定になっています。** 使用しない場合は、`config.yaml`の`fcgi-server`を`false`にしてください。
 Devoirs(v0.3.0以前)はCLIアプリですが、アカウントの認証時にGUIを用いるので、RDPやX転送などの**GUIアプリを実行できる環境を構築してください。**
 
 ### 2. Devoirs v0.3.0 のソースコードをインストールします。
 実行ファイルを実行するときに出るログを使用するので、**GUI版のDevoirs(v1.0.0以降)では動作しません。**
 
 ### 3. このレポジトリをGOPATHの中にインストールします。
-[Releases](https://github.com/takara2314/tcj2-kadai-store-api/releases)からソースコードをダウンロードして展開してください。
+[Releases](https://github.com/takara2314/tcj2-kadai-store-api/releases)のから最新版のソースコードをダウンロードして展開してください。
 また、GOPATH以外では正しく動作しない場合があります。
 
-### 4. GOPATHの中に以下のファイルを加えます。
-- kadai-store-api.token
+### 4. config.yamlで基本的な設定を行います。
+| key | > | description |
+| :---: | :---: | :--- |
+| update-times | > | 時間を入れます。 |
+| server-port | > | 時間を入れます。 |
+| fcgi-server | > | 時間を入れます。 |
+| get-limit | > | 時間を入れます。 |
+| subjects | > | 時間を入れます。 |
+| ^ | teams | 時間を入れます。 |
+| ^ | syllabus | 時間を入れます。 |
+| ^ | omitted | 時間を入れます。 |
+| discord | alarm | 時間を入れます。 |
+| ^ | admin-id | 時間を入れます。 |
+| ^ | message-format | 時間を入れます。 |
+| ^ | command-prefix | 時間を入れます。 |
+↑書きかけです
 
 **APIで許可するトークン**を記述します。
 改行区切りで複数のトークンを指定することができます。
@@ -68,9 +83,6 @@ Devoirs(v0.3.0以前)はCLIアプリですが、アカウントの認証時にGU
 │  ├─ src ................................... devoirsのソースコード
 │
 └─ go/ ...................................... $GOPATH
-   ├─ kadai-store-api.token ................. APIで許可するトークン
-   ├─ kadai-store-api_discord-alarm.token ... Discordボットのトークン
-   ├─ kadai-store-api_admin-discord-ID.id ... API管理者のDiscordID
    └─ kadai-store-api/ ...................... このレポジトリ
       ├─ main.go ............................ 主にWebアプリの処理
       ├─ subjectList.go ..................... チーム名や課題を入れる
