@@ -3,14 +3,13 @@ package main
 import (
 	"net"
 	"net/http/fcgi"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	var err error
-
 	// 毎時指定した時間(分)にdevoirsから課題一覧を取得
 	go getRegularly(configData.UpdateTimes)
 
@@ -25,21 +24,18 @@ func main() {
 	r.GET("/get", getRequestFunc)
 	r.GET("/version", versionRequestFunc)
 
-	// Reverse Proxy で動かす場合
-	// (こちらを使用する場合は、37行目をコメントにしてください)
-	//
-	l, err := net.Listen("tcp", ":8080")
-	if err != nil {
-		panic(err)
+	// FastCGIとして動かす場合
+	if configData.FCGI {
+		l, err := net.Listen("tcp", ":"+strconv.Itoa(configData.Port))
+		if err != nil {
+			panic(err)
+		}
+		if err := fcgi.Serve(l, r); err != nil {
+			panic(err)
+		}
+	} else {
+		r.Run(":" + strconv.Itoa(configData.Port))
 	}
-	if err := fcgi.Serve(l, r); err != nil {
-		panic(err)
-	}
-
-	// 通常のように動かす場合
-	// (こちらを使用する場合は、26~32行目をコメントにしてください)
-	//
-	// r.Run(":8080")
 }
 
 // homeRequestFunc は/アクセスされたときの処理

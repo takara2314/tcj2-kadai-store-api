@@ -19,13 +19,10 @@ var (
 	tokenData  tokenYaml
 	// 各トークンの残りのGETリクエスト可能回数を記録
 	tokenLimit map[string]int = make(map[string]int, 0)
-	// 全ての課題情報 (タイムゾーン: UTC)
-	homeworksData ResponseJSON
-	// 全ての課題情報 (タイムゾーン: UTC) (期限: 未来のみ)
-	homeworksDataOnlyFuture ResponseJSON
-	// 全ての課題情報 (タイムゾーン: Asia/Tokyo)
-	homeworksDataJST ResponseJSON
-	// 全ての課題情報 (タイムゾーン: Asia/Tokyo) (期限: 未来のみ)
+	// 全ての課題情報
+	homeworksData              ResponseJSON
+	homeworksDataOnlyFuture    ResponseJSON
+	homeworksDataJST           ResponseJSON
 	homeworksDataOnlyFutureJST ResponseJSON
 	// Discordボットのセッション
 	dg *discordgo.Session
@@ -51,6 +48,8 @@ type HomeworkStruct struct {
 // config.yaml のデータを格納する構造体
 type configYaml struct {
 	UpdateTimes []int              `yaml:"update-times"`
+	Port        int                `yaml:"server-port"`
+	FCGI        bool               `yaml:"fcgi-server"`
 	GETLimit    int                `yaml:"get-limit"`
 	Subjects    configYamlSubjects `yaml:"subjects"`
 	Discord     configYamlDiscord  `yaml:"discord"`

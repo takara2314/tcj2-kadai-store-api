@@ -20,12 +20,12 @@ func discordAlarm(description string, coping string, errorM error) {
 // messageCreate はDiscordボットで投稿をする関数
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	// 応答確認用メッセージ
-	if m.Content == configData.Discord.CommandPrefix+"ping" {
+	if m.Content == configData.Discord.CommandPrefix+" ping" {
 		s.ChannelMessageSend(m.ChannelID, "ボットは正常に稼働しています。")
 	}
 
 	// 強制停止メッセージ
-	if m.Content == configData.Discord.CommandPrefix+"stop" {
+	if m.Content == configData.Discord.CommandPrefix+" stop" {
 		if m.Author.ID == configData.Discord.AdminID {
 			s.ChannelMessageSend(m.ChannelID, "ボットを強制終了させます。")
 			panic("管理者による強制終了")

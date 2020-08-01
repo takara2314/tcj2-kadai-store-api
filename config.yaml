@@ -3,6 +3,10 @@
 
 # Devoirsを実行して情報を更新する時刻(分)
 update-times: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58]
+# API提供サーバーのポート番号
+server-port: 8080
+# FastCGIとして動かすかどうか (falseにすると普通のHTTPサーバーになります)
+fcgi-server: true
 # 10分間にこのAPIにGETできる回数 (無制限なら: -1)
 # (トークンごとに記録されます)
 get-limit: -1
@@ -89,17 +93,17 @@ discord:
   # Discordでエラー通知をするかどうか
   alarm: false
   # エラー通知をするユーザーのID (alarmをtrueにした方のみ)
-  admin-id: ""
+  admin-id: 
   # 通知フォーマット (alarmをtrueにした方のみ)
   #   1つめの%s> エラーの概要
   #   2つめの%s> 予測される対処方法
   #   3つめの%s> 内部のエラーメッセージ (停止メッセージ)
   message-format: |
-    "%s"
-    "%s"
-    "```"
-    "%s"
-    "```"
+    %s
+    %s
+    ```
+    %s
+    ```
   # Discordボットを呼び出すコマンドの接頭辞 (alarmをtrueにした方のみ)
-  command-prefix: "::kadai-store"
+  command-prefix: ::kadai-store
   # Discordボットのトークンは token.yaml のdiscord-tokenにご記入ください
