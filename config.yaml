@@ -94,7 +94,12 @@ discord:
   #   1つめの%s> エラーの概要
   #   2つめの%s> 予測される対処方法
   #   3つめの%s> 内部のエラーメッセージ (停止メッセージ)
-  message-format: "%s\n%s\n```\n%s\n```"
+  message-format: |
+    "%s"
+    "%s"
+    "```"
+    "%s"
+    "```"
   # Discordボットを呼び出すコマンドの接頭辞 (alarmをtrueにした方のみ)
   command-prefix: "::kadai-store"
   # Discordボットのトークンは token.yaml のdiscord-tokenにご記入ください
