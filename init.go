@@ -81,8 +81,8 @@ func init() {
 
 	// config.yaml を読み込む
 	if !isFileExist("config.yaml") {
-		log.Fatalln("エラー: config.yaml が見つかりません")
-		log.Fatalln("APIの基本的な設定を書くファイルですので、ファイルが存在しないと起動できません。")
+		log.Println("エラー: config.yaml が見つかりません")
+		log.Println("APIの基本的な設定を書くファイルですので、ファイルが存在しないと起動できません。")
 		panic("起動に失敗しました。")
 	}
 	fileData, err = ioutil.ReadFile("config.yaml")
@@ -98,8 +98,8 @@ func init() {
 
 	// token.yaml を読み込む
 	if !isFileExist("token.yaml") {
-		log.Fatalln("エラー: token.yaml が見つかりません")
-		log.Fatalln("APIを利用されるのに必要なトークンを書くファイルですので、ファイルが存在しないと起動できません。")
+		log.Println("エラー: token.yaml が見つかりません")
+		log.Println("APIを利用されるのに必要なトークンを書くファイルですので、ファイルが存在しないと起動できません。")
 		panic("起動に失敗しました。")
 	}
 	fileData, err = ioutil.ReadFile("token.yaml")
@@ -116,14 +116,14 @@ func init() {
 	// Discordを起動する設定になっていれば
 	if configData.Discord.Alarm {
 		if tokenData.DiscordToken == "" {
-			log.Fatalln("エラー: Discordボットのトークンが設定されていません。")
-			log.Fatalln("Discord報告機能をオンにするには、報告するボットのトークンが必要です。")
+			log.Println("エラー: Discordボットのトークンが設定されていません。")
+			log.Println("Discord報告機能をオンにするには、報告するボットのトークンが必要です。")
 			panic("起動に失敗しました。")
 		}
 		if configData.Discord.AdminID == "" {
-			log.Fatalln("エラー: Discordボットに報告してもらうユーザーのIDが設定されていません。")
-			log.Fatalln("Discord報告機能をオンにするには、報告してもらうユーザーのIDが必要です。")
-			log.Fatalln("もしユーザーIDを確認できない場合は、Discordの設定の「テーマ」の「詳細設定」からユーザーIDを確認できる設定にできます。")
+			log.Println("エラー: Discordボットに報告してもらうユーザーのIDが設定されていません。")
+			log.Println("Discord報告機能をオンにするには、報告してもらうユーザーのIDが必要です。")
+			log.Println("もしユーザーIDを確認できない場合は、Discordの設定の「テーマ」の「詳細設定」からユーザーIDを確認できる設定にできます。")
 			panic("起動に失敗しました。")
 		}
 		// Discordボットを起動
@@ -137,8 +137,8 @@ func discordInit() {
 
 	dg, err = discordgo.New("Bot " + tokenData.DiscordToken)
 	if err != nil {
-		log.Fatalln("エラー: Discordボットの起動に失敗しました。")
-		log.Fatalln(err)
+		log.Println("エラー: Discordボットの起動に失敗しました。")
+		log.Println(err)
 		panic("起動に失敗しました。")
 	}
 
@@ -146,8 +146,8 @@ func discordInit() {
 
 	err = dg.Open()
 	if err != nil {
-		log.Fatalln("エラー: Discordボットの起動に失敗しました。")
-		log.Fatalln(err)
+		log.Println("エラー: Discordボットの起動に失敗しました。")
+		log.Println(err)
 		panic("起動に失敗しました。")
 	}
 
