@@ -29,8 +29,6 @@ var (
 	homeworksDataOnlyFutureJST ResponseJSON
 	// Discordボットのセッション
 	dg *discordgo.Session
-	// アラームする人のDiscordID
-	adminDiscordID string
 	// アラームを送信したかどうか
 	discordAlarmed bool = false
 )

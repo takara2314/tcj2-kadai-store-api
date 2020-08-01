@@ -9,7 +9,7 @@ import (
 // discordAlarm はエラーが発生したときにDiscordのDMで僕に報告する関数
 func discordAlarm(description string, coping string, errorM error) {
 	// 指定したユーザーのDMに挨拶とエラー含めた内容を送る
-	dmChannel, err := dg.UserChannelCreate(adminDiscordID)
+	dmChannel, err := dg.UserChannelCreate(configData.Discord.AdminID)
 	if err != nil {
 		panic(err)
 	}
@@ -26,7 +26,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	// 強制停止メッセージ
 	if m.Content == configData.Discord.CommandPrefix+"stop" {
-		if m.Author.ID == adminDiscordID {
+		if m.Author.ID == configData.Discord.AdminID {
 			s.ChannelMessageSend(m.ChannelID, "ボットを強制終了させます。")
 			panic("管理者による強制終了")
 		} else {
