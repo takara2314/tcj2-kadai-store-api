@@ -49,34 +49,27 @@ Devoirs(v0.3.0以前)はCLIアプリですが、アカウントの認証時にGU
 また、GOPATH以外では正しく動作しない場合があります。
 
 ### 4. config.yamlで基本的な設定を行います。
-| key | > | description |
-| :---: | :---: | :--- |
-| update-times | > | 時間を入れます。 |
-| server-port | > | 時間を入れます。 |
-| fcgi-server | > | 時間を入れます。 |
-| get-limit | > | 時間を入れます。 |
-| subjects | > | 時間を入れます。 |
-| ^ | teams | 時間を入れます。 |
-| ^ | syllabus | 時間を入れます。 |
-| ^ | omitted | 時間を入れます。 |
-| discord | alarm | 時間を入れます。 |
-| ^ | admin-id | 時間を入れます。 |
-| ^ | message-format | 時間を入れます。 |
-| ^ | command-prefix | 時間を入れます。 |
-↑書きかけです
+| Keys                   |                                                             |
+|:-----------------------|:-----------------------------------------------------------:|
+| update-times           | Devoirsを実行して情報を更新する時刻(分)                        |
+| server-port            | API提供サーバーのポート番号                                   |
+| fcgi-server            | FastCGIとして動かすかどうか                                  |
+| get-limit              | 10分間にこのAPIにGETできる回数 (無制限なら`-1`を入れてください) |
+| subjects/teams         | その教科のTeamsのチーム名                                    |
+| subjects/syllabus      | シラバスでの教科名                                           |
+| subjects/omitted       | 省略された教科名                                             |
+| discord/alarm          | Discordでエラーを通知するかどうか                             |
+| discord/admin-id       | エラー通知するユーザーのID (`alarm`を`true`にした方のみ)           |
+| discord/message-format | メッセージフォーマット (`alarm`を`true`にした方のみ)               |
+| discord/command-prefix | ボットを呼び出すコマンドの接頭辞 (`alarm`を`true`にした方のみ)      |
 
-**APIで許可するトークン**を記述します。
-改行区切りで複数のトークンを指定することができます。
+### 5. token.yamlでトークンについての設定を行います。
+| Keys           |                                                                              |
+|:---------------|:----------------------------------------------------------------------------:|
+| allowed-tokens | 当APIにアクセスを許可するトークン (ここで定めたものを利用者側に教えてください)     |
+| discord-token  | Discordボットのトークン (`config.yaml`の`discord`の`alarm`を`true`にした方のみ) |
 
-#### オプション (DiscordのDMで通知)
-- kadai-store-api_discord-alarm.token
-- kadai-store-api_admin-discord-ID.id
-
-それぞれ**Discordボットのトークン**、**API管理者のDiscordID**を記述します。
-複数のトークンやIDを入れることはできません。
-これらのファイルを加えることによって、Devoirsの実行エラーが生じたときに、DiscordのDMで通知を受け取ることができます。
-
-### 5. それぞれのファイルやフォルダを以下のディレクトリ管理下に配置します。
+### 6. それぞれのファイルやフォルダを以下のディレクトリ管理下に配置します。
 ```
 ./
 ├─ devoirs/ ................................. devoirs v0.3.0
@@ -85,11 +78,12 @@ Devoirs(v0.3.0以前)はCLIアプリですが、アカウントの認証時にGU
 └─ go/ ...................................... $GOPATH
    └─ kadai-store-api/ ...................... このレポジトリ
       ├─ main.go ............................ 主にWebアプリの処理
-      ├─ subjectList.go ..................... チーム名や課題を入れる
+      ├─ config.yaml ........................ 基本的な設定
+      ├─ token.yaml ......................... トークンの設定
 ```
 ``├─`` で終わってるものは、まだ続きがあることを示します。
 
-### 6. devoirs/src/models/assignment.ts の内容を以下の内容に変更します。
+### 7. devoirs/src/models/assignment.ts の内容を以下の内容に変更します。
 ```TypeScript:main.ts
 import { ClassId } from './class';
 
@@ -110,7 +104,7 @@ export function compare(a: Assignment, b: Assignment): number {
 ```
 これをすることによって、課題の提出期限のデータを扱うことができます。
 
-### 7. devoirs/src/main.ts の20~26行目の次の構文を変更します。
+### 8. devoirs/src/main.ts の20~26行目の次の構文を変更します。
 ```TypeScript:main.ts
 for (const c of await client.getClasses()) {
 	console.log(`-`, c.name);
@@ -133,10 +127,6 @@ for (const c of await client.getClasses()) {
 に書き換えます。
 これをすることによって、課題のIDや提出期限も取得できるようになります。
 
-### 8. go/tcj2-kadai-store-api/subjectList.go を対象のクラスのチーム名・教科名に合わせます。
-デフォルトとして、鳥羽商船高等専門学校のある学科学年の前期課程で履修する教科名とクラスチーム名が入っています。
-ファイルの中の3つのスライス(他の言語でいうリスト)は同じ要素番号(インデックス番号)の値同士とリンクして処理されます。
-
 ### 9. GUI環境で devoirs/ でDevoirsを実行します。
 ```Bash
 $ npm install
@@ -158,6 +148,9 @@ $ go build
 DMやグループ、サーバーのどこでも実行することができます。
 ### ::kadai-store ping
 サーバーが落ちていないかを確かめるコマンドです。
+API管理者ユーザー以外でも実行できます。
+### ::kadai-store version
+`TCJ2 Kadai Store API`のバージョンを確認するコマンドです。
 API管理者ユーザー以外でも実行できます。
 ### ::kadai-store stop
 サーバーを強制終了させるコマンドです。

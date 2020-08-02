@@ -24,6 +24,11 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(m.ChannelID, "ボットは正常に稼働しています。")
 	}
 
+	// バージョン確認用メッセージ
+	if m.Content == configData.Discord.CommandPrefix+" version" {
+		s.ChannelMessageSend(m.ChannelID, "TCJ2 Kadai Store API - v0.2.0 pre3")
+	}
+
 	// 強制停止メッセージ
 	if m.Content == configData.Discord.CommandPrefix+" stop" {
 		if m.Author.ID == configData.Discord.AdminID {
