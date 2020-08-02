@@ -38,7 +38,7 @@ $ curl https://example.com/get?due=future&timezone=Asia/Tokyo \
 
 ## 🛠 環境構築 (提供側)
 ### 1. WebサーバーとGUIアプリの実行環境を構築します。
-デフォルトで**FastCGIとしてサーバーを開く設定になっています。** 使用しない場合は、`config.yaml`の`fcgi-server`を`false`にしてください。
+デフォルトでApacheやNginxなどを用いて**FastCGIとしてサーバーを開く設定になっています。** 使用しない場合は、`config.yaml`の`fcgi-server`を`false`にしてください。
 Devoirs(v0.3.0以前)はCLIアプリですが、アカウントの認証時にGUIを用いるので、RDPやX転送などの**GUIアプリを実行できる環境を構築してください。**
 
 ### 2. Devoirs v0.3.0 のソースコードをインストールします。
@@ -102,7 +102,7 @@ export function compare(a: Assignment, b: Assignment): number {
   return a.dueDateTime.localeCompare(b.dueDateTime);
 }
 ```
-これをすることによって、課題の提出期限のデータを扱うことができます。
+これをすることによって、課題の提出期限のデータを扱うことができるようになります。
 
 ### 8. devoirs/src/main.ts の20~26行目の次の構文を変更します。
 ```TypeScript:main.ts

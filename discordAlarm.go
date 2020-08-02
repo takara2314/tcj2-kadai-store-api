@@ -26,7 +26,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	// バージョン確認用メッセージ
 	if m.Content == configData.Discord.CommandPrefix+" version" {
-		s.ChannelMessageSend(m.ChannelID, "TCJ2 Kadai Store API - v0.2.0 pre3")
+		s.ChannelMessageSend(m.ChannelID, "TCJ2 Kadai Store API - v0.2.0")
 	}
 
 	// 強制停止メッセージ

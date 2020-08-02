@@ -94,7 +94,7 @@ discord:
   # Discordでエラー通知をするかどうか
   alarm: false
   # エラー通知をするユーザーのID (alarmをtrueにした方のみ)
-  admin-id: 
+  admin-id:
   # 通知するメッセージフォーマット (alarmをtrueにした方のみ)
   #   1つめの%s> エラーの概要
   #   2つめの%s> 予測される対処方法
