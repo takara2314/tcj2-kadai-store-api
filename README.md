@@ -2,6 +2,12 @@
 [Devoirs](https://github.com/approvers/devoirs) を使用して [Microsoft Teams](https://www.microsoft.com/ja-jp/microsoft-365/microsoft-teams/group-chat-software/)(Microsoft 365 Education) で出されている課題の情報を取得し、APIを提供します。
 この場をお借りして Devoirs の開発に関わった方々に感謝申し上げます。
 
+![システム構成図](https://github.com/takara2314/tcj2-kadai-store/blob/master/SystemConfig.png)
+
+([ツイートより画像を引用](https://twitter.com/takara2314/status/1285527855284105216))
+
+TCJ2 Kadai Store API は画像の左側の Google Compute Engine で提供されるAPIサーバーです。Google Compute Engine 環境以外でもご利用頂けます。
+
 ## 👨‍💻 API利用方法
 ### 課題一覧を取得 — GET /get
 #### Parameters
