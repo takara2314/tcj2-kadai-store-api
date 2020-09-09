@@ -2,7 +2,7 @@
 [Devoirs](https://github.com/approvers/devoirs) を使用して [Microsoft Teams](https://www.microsoft.com/ja-jp/microsoft-365/microsoft-teams/group-chat-software/)(Microsoft 365 Education) で出されている課題の情報を取得し、APIを提供します。
 この場をお借りして Devoirs の開発に関わった方々に感謝申し上げます。
 
-![システム構成図](https://github.com/takara2314/tcj2-kadai-store/blob/master/SystemConfig.png)
+![システム構成図](https://github.com/takara2314/tcj2-kadai-store-api/blob/master/SystemConfig.png)
 
 ([ツイートより画像を引用](https://twitter.com/takara2314/status/1285527855284105216))
 
