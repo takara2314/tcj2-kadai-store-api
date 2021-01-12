@@ -1,5 +1,6 @@
 ## ⚠ 注意
-[Devoirs](https://github.com/approvers/devoirs) が開発終了しているため、このAPIの開発も終了しています。今後はセキュリティアップデートのみとなります。
+このAPIを大幅に改良したバージョンを、[別のレポジトリ](https://github.com/takara2314/kadai-store-api)にて公開しています。
+そのバージョンから`Kadai Store API`と名称が変更になりました。
 
 # 🎒 TCJ2 Kadai Store API
 [Devoirs](https://github.com/approvers/devoirs) を使用して [Microsoft Teams](https://www.microsoft.com/ja-jp/microsoft-365/microsoft-teams/group-chat-software/)(Microsoft 365 Education) で出されている課題の情報を取得し、APIを提供します。
